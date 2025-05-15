@@ -66,44 +66,31 @@ if __name__ == "__main__":
     parser.add_argument('--pt', type=int, required=True, help='the number of Measurement (default: 100)')
     parser.add_argument('--config', type=str, default=None, help='Path to the configuration file')
     parser.add_argument('--dn', type=str, default="default_name", help='the name of device node (default: default_name)')
-
-
-    # parser.add_argument('--pb', type=int, default=100, help='the payload byte of pingpong message (default: 100)')
-    # parser.add_argument('--pt', type=int, default=1, help='the number of pingpong (default: 1)')
-
-    # pb_list = [1, 10, 100, 1000, 10000, 100000, 1000000]
-    # pt_list = [0, 1, 10]
-
-    # pb_list = [1000000]
-    # pt_list = [10]
-
-    # test_list = []
-
-    # for pb in pb_list:
-    #     for pt in pt_list:
-    #         # if pb*pt > 1000000:
-    #         #     continue
-    #         test_list.append([pb, pt])
-    
-    # for pb, pt in test_list:
-    #     gc.collect()
+    parser.add_argument('--protocol', type=str, required=True, choices=['zenoh', 'mqtt', 'kafka', 'dds'], default="zenoh", help='the protocol to use (default: zenoh)')
         
     args = parser.parse_args()
     node_num = args.node
     measurement_times = args.mt
     payload_bytes = args.pb
     pingpong_times = args.pt
-    # message = 'a' * payload_bytes
+    protocol = args.protocol
     message = generate_random_string(payload_bytes, seed=42)
-    # print(f'message:{message}')
-    # messages = [message for _ in range(node_num)]
     messages = [message] 
-    # conf = common.get_config_from_args(args)
-    conf = zenoh.Config()
-    # conf.insert("","")
-    #print(f'config: {conf}')
-    session = zenoh.open(conf)
-    print(f'session: {session}')
+
+    match protocol:
+        case "zenoh":
+            conf = zenoh.Config()
+            session = zenoh.open(conf)
+            print(f'session: {session}')
+        case "mqtt":
+            pass
+        case "kafka":
+            ValueError("kafka is not supported")
+        case "dds":
+            ValueError("dds is not supported")
+        case _:
+            print("protocol is not supported")
+            sys.exit(1)
 
     
     data_folder_path = os.path.join(f"./data/",f"{args.dn}")
