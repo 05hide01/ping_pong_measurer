@@ -1,0 +1,7 @@
+sample_*
+sample/
+.mypy_cache
+src/__pycache__
+*.pyc
+.DS_Store
+data/
