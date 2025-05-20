@@ -56,19 +56,19 @@ def publish(client, msg):
         print(f"Failed to send message to topic {ping_topic}")
 
 
-def run(count, message, size):
-    userdata = {
-            'count':    count,
+def run(pingpong_times, measurement_times, message, size):
+    for i in range(measurement_times):
+        userdata = {
+            'count':    pingpong_times,
             'size':     size,
             'received': 0,
             'start':    time.time(),
         }
-
-    client = connect_mqtt()
-    client.user_data_set(userdata)
-    subscribe(client)
-    publish(client, message)
-    client.loop_forever(timeout=30)
+        client = connect_mqtt()
+        client.user_data_set(userdata)
+        subscribe(client)
+        publish(client, message)
+        client.loop_forever(timeout=30)
 
 
 
@@ -86,4 +86,4 @@ if __name__ == '__main__':
     payload_bytes = args.pb
     pingpong_times = args.pt
     message = os.urandom(payload_bytes).decode('latin-1')
-    run(pingpong_times, message, payload_bytes)
+    run(pingpong_times, measurement_times, message, payload_bytes)
