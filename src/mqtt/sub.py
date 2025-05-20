@@ -7,7 +7,8 @@ from paho.mqtt import client as mqtt_client
 
 broker = 'broker.emqx.io'
 port = 1883
-topic = "python/mqtt"
+ping_topic = "python/mqtt/ping"
+pong_topic = "python/mqtt/pong"
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
 # username = 'emqx'
@@ -31,8 +32,10 @@ def connect_mqtt() -> mqtt_client:
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        client.publish(pong_topic, msg.payload)
+        print(f"Published `{msg.payload.decode()}` to `pong` topic")
 
-    client.subscribe(topic)
+    client.subscribe(ping_topic)
     client.on_message = on_message
 
 
