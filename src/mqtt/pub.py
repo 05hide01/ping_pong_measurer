@@ -17,7 +17,7 @@ pong_topic = "python/mqtt/pong"
 client_id = f'publish-{random.randint(0, 1000)}'
 # username = 'emqx'
 # password = 'public'
-results = [['took time[ms]']]
+results = [['took time[s]']]
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
