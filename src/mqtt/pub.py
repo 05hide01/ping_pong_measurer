@@ -9,7 +9,7 @@ import tracemalloc
 
 
 
-broker = 'localhost'
+broker = '10.0.0.4'
 port = 1883
 ping_topic = "python/mqtt/ping"
 pong_topic = "python/mqtt/pong"
@@ -108,8 +108,8 @@ if __name__ == '__main__':
     measurement_times = args.mt
     payload_bytes = args.pb
     pingpong_times = args.pt
-    # message = os.urandom(payload_bytes).decode('latin-1')
-    message = "a"*payload_bytes
+    message = os.urandom(payload_bytes)
+    # message = "a"*payload_bytes
     ping_dev = args.ping_dev
     pong_dev = args.pong_dev
     inter_dev = args.inter_dev
