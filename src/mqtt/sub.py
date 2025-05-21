@@ -31,9 +31,9 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
-        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        print(f"Received from `{msg.topic}` topic")
         client.publish(pong_topic, msg.payload)
-        print(f"Published `{msg.payload.decode()}` to `pong` topic")
+        print(f"Published to `pong` topic")
 
     client.subscribe(ping_topic)
     client.on_message = on_message
@@ -42,7 +42,7 @@ def subscribe(client: mqtt_client):
 def run():
     client = connect_mqtt()
     subscribe(client)
-    client.loop_forever()
+    client.loop_forever(timeout = 30000000)
 
 
 if __name__ == '__main__':
