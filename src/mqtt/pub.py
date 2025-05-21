@@ -102,7 +102,7 @@ if __name__ == '__main__':
     parser.add_argument('--ping_dev', type=str, required=True, choices= dev_list, help='the name of device')
     parser.add_argument('--pong_dev', type=str, required=True, choices= dev_list, help='the name of device')
     parser.add_argument('--inter_dev', type=str, required=True, choices= dev_list, help='the name of device')
-    parser.add_argument('--struct', type=str, required=True, choices=['single', 'multi'], help='the type of structure')
+    parser.add_argument('--struct', type=str, required=True, choices=['single', 'broker_w_sub', 'broker_separated'], help='the type of structure')
     args = parser.parse_args()
     node_num = args.node
     measurement_times = args.mt
