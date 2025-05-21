@@ -5,7 +5,7 @@ import random
 from paho.mqtt import client as mqtt_client
 
 
-broker = 'broker.emqx.io'
+broker = 'localhost'
 port = 1883
 ping_topic = "python/mqtt/ping"
 pong_topic = "python/mqtt/pong"

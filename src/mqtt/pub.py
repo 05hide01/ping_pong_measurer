@@ -5,9 +5,11 @@ import random
 import time
 
 from paho.mqtt import client as mqtt_client
+import tracemalloc
 
 
-broker = 'broker.emqx.io'
+
+broker = 'localhost'
 port = 1883
 ping_topic = "python/mqtt/ping"
 pong_topic = "python/mqtt/pong"
@@ -24,9 +26,16 @@ def connect_mqtt():
         else:
             print("Failed to connect, return code %d\n", rc)
 
+    def on_disconnect(client, userdata, rc):
+        print("Disconnected with result code", rc)
+
+    def on_publish(client, userdata, mid):
+        print("Message published")
+
     client = mqtt_client.Client(client_id)
-    # client.username_pw_set(username, password)
     client.on_connect = on_connect
+    client.on_disconnect = on_disconnect
+    client.on_publish = on_publish
     client.connect(broker, port)
     return client
 
@@ -72,6 +81,7 @@ def run(pingpong_times, measurement_times, message, size, file_name):
         subscribe(client, file_name)
         publish(client, message)
         client.loop_forever(timeout=30000000)
+        del client
     with open(file_name, 'w') as f:
         for result in results:
             f.write(','.join(map(str, result)) + '\n')
@@ -79,6 +89,9 @@ def run(pingpong_times, measurement_times, message, size, file_name):
 
 
 if __name__ == '__main__':
+
+    tracemalloc.start()
+
     dev_list = ['orin', 'rasp5', 'kakip', 'rdkx3', 'rb3g2', 'banana', 'orange']
     parser = argparse.ArgumentParser(description='Ping→Pong を count 回繰り返し、合計時間を測定 (payload はランダムな n バイト)')
     parser.add_argument('--node', type=int, default=1, help='the number of Pong Node (default: 5)')
