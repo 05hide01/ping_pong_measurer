@@ -36,11 +36,11 @@ python src/process_measurement_helper.py --node 5 --mt 1 --pt 1 --pb 100
 In this case, the number of measurement (--mt) is 1, the number of pingpong (-pt) is 1, and the payload byte (--pb) is 100.
 
 the data is stored in csv format in ./data
-'''
-In order to activate broker port opnner, add this comment line to ''' /etc/mosquitto/mosquitto.conf '''
-'''
+```
+In order to activate broker port opnner, add this comment line to ``` /etc/mosquitto/mosquitto.conf ```
+```
 listener 1883 0.0.0.0
 allow_anonymous true
-'''
+```
 
 
